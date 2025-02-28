@@ -12,6 +12,6 @@ type Record struct {
 	CycleTime     int       `gorm:"not null" json:"cycle_time"`
 	ApproachTime  int       `gorm:"not null" json:"approach_time"`
 	ActualTrucks  float64   `gorm:"not null" json:"actual_trucks"`
-	Productivity  int       `gorm:"not null" json:"8"`
+	Productivity  int       `gorm:"not null" json:"productivity"`
 	UserID        int       `gorm:"not null" json:"user_id"`
 }
