@@ -16,3 +16,7 @@ func NewRecordService(repo repository.Record) *RecordService {
 func (s *RecordService) CreateRecord(record model.Record) error {
 	return s.repo.CreateRecord(record)
 }
+
+func (s *RecordService) GetAllRecords() ([]model.Record, error) {
+	return s.repo.GetAllRecords()
+}

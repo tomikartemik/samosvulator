@@ -24,4 +24,5 @@ type User interface {
 
 type Record interface {
 	CreateRecord(record model.Record) error
+	GetAllRecords() ([]model.Record, error)
 }

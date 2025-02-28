@@ -16,3 +16,9 @@ func NewRecordRepository(db *gorm.DB) *RecordRepository {
 func (r *RecordRepository) CreateRecord(record model.Record) error {
 	return r.db.Create(&record).Error
 }
+
+func (r *RecordRepository) GetAllRecords() ([]model.Record, error) {
+	var records []model.Record
+	result := r.db.Find(&records)
+	return records, result.Error
+}

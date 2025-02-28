@@ -42,6 +42,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	record := router.Group("/record")
 	{
 		record.POST("/create", h.CreateRecord)
+		record.GET("/all", h.GetAllRecords)
 	}
 	return router
 }

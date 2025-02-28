@@ -21,3 +21,11 @@ func (h *Handler) CreateRecord(c *gin.Context) {
 
 	c.JSON(http.StatusOK, model.SuccessResponse{Message: "Запись успешно сохранена!"})
 }
+
+func (h *Handler) GetAllRecords(c *gin.Context) {
+	records, err := h.services.GetAllRecords()
+	if err != nil {
+		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+	}
+	c.JSON(http.StatusOK, records)
+}
