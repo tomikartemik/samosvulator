@@ -15,7 +15,7 @@ func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		User:   NewUserService(repos),
 		Record: NewRecordService(repos),
-		Sheets: NewSheetsService(repos),
+		Sheets: NewSheetsService(repos.Record, repos.User),
 	}
 }
 

@@ -11,8 +11,8 @@ type SheetsService struct {
 	repoU repository.User
 }
 
-func NewSheetsService(repo repository.Repository) *SheetsService {
-	return &SheetsService{repoR: repo.Record, repoU: repo.User}
+func NewSheetsService(repoR repository.Repository, repoU repository.User) *SheetsService {
+	return &SheetsService{repoR: repoR, repoU: repoU}
 }
 
 func (s *SheetsService) GetRecordsForAnalise() ([]model.RecordForAnalise, error) {
