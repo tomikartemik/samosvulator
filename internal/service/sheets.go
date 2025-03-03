@@ -11,7 +11,7 @@ type SheetsService struct {
 	repoU repository.User
 }
 
-func NewSheetsService(repoR repository.Repository, repoU repository.User) *SheetsService {
+func NewSheetsService(repoR repository.Record, repoU repository.User) *SheetsService {
 	return &SheetsService{repoR: repoR, repoU: repoU}
 }
 

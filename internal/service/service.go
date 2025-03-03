@@ -13,8 +13,8 @@ type Service struct {
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		User:   NewUserService(repos),
-		Record: NewRecordService(repos),
+		User:   NewUserService(repos.User),
+		Record: NewRecordService(repos.Record),
 		Sheets: NewSheetsService(repos.Record, repos.User),
 	}
 }
