@@ -8,12 +8,14 @@ import (
 type Service struct {
 	User
 	Record
+	Sheets
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		User:   NewUserService(repos),
 		Record: NewRecordService(repos),
+		Sheets: NewSheetsService(repos),
 	}
 }
 
@@ -25,4 +27,8 @@ type User interface {
 type Record interface {
 	CreateRecord(record model.Record) error
 	GetAllRecords() ([]model.Record, error)
+}
+
+type Sheets interface {
+	GetRecordsForAnalise() ([]model.RecordForAnalise, error)
 }

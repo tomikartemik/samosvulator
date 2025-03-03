@@ -43,6 +43,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		record.POST("/create", h.CreateRecord)
 		record.GET("/all", h.GetAllRecords)
+		record.GET("/analise", h.GetRecordsForAnalise)
 	}
 	return router
 }
