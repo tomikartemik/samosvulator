@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"samosvulator/internal/service"
 	"samosvulator/internal/utils"
-	"strings"
 )
 
 const (
@@ -19,13 +18,7 @@ func (h *Handler) UserIdentity(c *gin.Context) {
 		return
 	}
 
-	headerParts := strings.Split(header, " ")
-	if len(headerParts) != 1 {
-		utils.NewErrorResponse(c, http.StatusUnauthorized, "Invalid authorization header")
-		return
-	}
-
-	userId, err := service.ParseToken(headerParts[1])
+	userId, err := service.ParseToken(header)
 
 	if err != nil {
 		utils.NewErrorResponse(c, http.StatusUnauthorized, err.Error())
