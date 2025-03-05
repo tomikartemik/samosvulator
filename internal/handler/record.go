@@ -5,16 +5,20 @@ import (
 	"net/http"
 	"samosvulator/internal/model"
 	"samosvulator/internal/utils"
-	"strconv"
 )
 
 func (h *Handler) CreateRecord(c *gin.Context) {
 	var record model.Record
 
-	userIDStr := c.GetString("user_id")
-	userID, err := strconv.Atoi(userIDStr)
-	if err != nil {
-		utils.NewErrorResponse(c, http.StatusUnauthorized, err.Error())
+	userIDStr, exists := c.Get("user_id")
+	if !exists {
+		utils.NewErrorResponse(c, http.StatusUnauthorized, "user_id not found in context")
+		return
+	}
+
+	userID, ok := userIDStr.(int)
+	if !ok {
+		utils.NewErrorResponse(c, http.StatusUnauthorized, "invalid user_id type in context")
 		return
 	}
 

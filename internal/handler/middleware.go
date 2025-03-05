@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"samosvulator/internal/service"
@@ -19,17 +20,30 @@ func (h *Handler) UserIdentity(c *gin.Context) {
 		return
 	}
 
-	headerParts := strings.Split(header, " ")
-	if len(headerParts) != 2 {
-		utils.NewErrorResponse(c, http.StatusUnauthorized, "Invalid authorization header")
+	token, err := extractToken(header)
+	if err != nil {
+		utils.NewErrorResponse(c, http.StatusUnauthorized, err.Error())
 		return
 	}
 
-	userId, err := service.ParseToken(headerParts[1])
-
+	userId, err := service.ParseToken(token)
 	if err != nil {
 		utils.NewErrorResponse(c, http.StatusUnauthorized, err.Error())
+		return
 	}
 
 	c.Set("user_id", userId)
+}
+
+func extractToken(header string) (string, error) {
+	if header == "" {
+		return "", errors.New("empty auth header")
+	}
+
+	parts := strings.Split(header, " ")
+	if len(parts) != 2 || parts[0] != "Bearer" {
+		return "", errors.New("invalid auth header")
+	}
+
+	return parts[1], nil
 }

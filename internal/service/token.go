@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"os"
+	"time"
 )
 
 var signingKey = os.Getenv("SIGN_KEY_STRING")
@@ -13,13 +14,25 @@ type tokenClaims struct {
 	UserId int `json:"user_id"`
 }
 
-func CreateToken(userId int) (token string) {
+func CreateToken(userId int) (string, error) {
+	if userId == 0 {
+		return "", errors.New("user_id cannot be empty")
+	}
+
 	params := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
+			IssuedAt:  time.Now().Unix(),
+		},
 		UserId: userId,
 	})
 
-	token, _ = params.SignedString([]byte(signingKey))
-	return token
+	token, err := params.SignedString([]byte(signingKey))
+	if err != nil {
+		return "", err
+	}
+
+	return token, nil
 }
 
 func ParseToken(accessToken string) (int, error) {
@@ -37,5 +50,10 @@ func ParseToken(accessToken string) (int, error) {
 	if !ok {
 		return 0, errors.New("invalid token claims")
 	}
+
+	if claims.UserId == 0 {
+		return 0, errors.New("user_id is empty or invalid")
+	}
+
 	return claims.UserId, nil
 }
