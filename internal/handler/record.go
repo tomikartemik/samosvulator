@@ -15,6 +15,7 @@ func (h *Handler) CreateRecord(c *gin.Context) {
 	userID, err := strconv.Atoi(userIDStr)
 	if err != nil {
 		utils.NewErrorResponse(c, http.StatusUnauthorized, err.Error())
+		return
 	}
 
 	if err := c.ShouldBindJSON(&record); err != nil {
@@ -26,6 +27,7 @@ func (h *Handler) CreateRecord(c *gin.Context) {
 
 	if err := h.services.CreateRecord(record); err != nil {
 		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
 	}
 
 	c.JSON(http.StatusOK, model.SuccessResponse{Message: "Запись успешно сохранена!"})
