@@ -17,13 +17,17 @@ type SignInInput struct {
 	Password string `json:"password"`
 }
 
+type SignInOutput struct {
+	Token string     `json:"token"`
+	User  UserOutput `json:"user"`
+}
+
 type UserOutput struct {
-	ID       int      `json:"id"`
-	Username string   `json:"username"`
-	Name     string   `json:"name"`
-	Surname  string   `json:"surname"`
-	Company  string   `json:"company"`
-	Section  string   `json:"section"`
-	JobTitle string   `json:"job_title"`
-	Records  []Record `json:"records"`
+	ID       int    `json:"id"`
+	Username string `json:"username"`
+	Name     string `json:"name"`
+	Surname  string `json:"surname"`
+	Company  string `json:"company"`
+	Section  string `json:"section"`
+	JobTitle string `json:"job_title"`
 }

@@ -21,7 +21,7 @@ func NewService(repos *repository.Repository) *Service {
 
 type User interface {
 	SignUp(userData model.User) error
-	SignIn(userData model.SignInInput) (model.UserOutput, error)
+	SignIn(userData model.SignInInput) (model.SignInOutput, error)
 }
 
 type Record interface {

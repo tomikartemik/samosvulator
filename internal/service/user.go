@@ -19,18 +19,25 @@ func (s *UserService) SignUp(userData model.User) error {
 	return s.repo.SignUp(userData)
 }
 
-func (s *UserService) SignIn(userData model.SignInInput) (model.UserOutput, error) {
+func (s *UserService) SignIn(userData model.SignInInput) (model.SignInOutput, error) {
 	userData.Password = utils.GeneratePasswordHash(userData.Password)
 
 	userID, err := s.repo.SignIn(userData)
 	if err != nil {
-		return model.UserOutput{}, err
+		return model.SignInOutput{}, err
 	}
 
 	user, err := s.repo.GetUserByID(userID)
 	if err != nil {
-		return model.UserOutput{}, err
+		return model.SignInOutput{}, err
 	}
 
-	return utils.UserToUserOutput(user), nil
+	token := CreateToken(user.ID)
+
+	userOutput := model.SignInOutput{
+		Token: token,
+		User:  utils.UserToUserOutput(user),
+	}
+
+	return userOutput, nil
 }

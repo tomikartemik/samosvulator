@@ -5,15 +5,24 @@ import (
 	"net/http"
 	"samosvulator/internal/model"
 	"samosvulator/internal/utils"
+	"strconv"
 )
 
 func (h *Handler) CreateRecord(c *gin.Context) {
 	var record model.Record
 
+	userIDStr := c.GetString("user_id")
+	userID, err := strconv.Atoi(userIDStr)
+	if err != nil {
+		utils.NewErrorResponse(c, http.StatusUnauthorized, err.Error())
+	}
+
 	if err := c.ShouldBindJSON(&record); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
+
+	record.UserID = userID
 
 	if err := h.services.CreateRecord(record); err != nil {
 		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())

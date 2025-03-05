@@ -11,7 +11,6 @@ func UserToUserOutput(user model.User) model.UserOutput {
 		Company:  user.Company,
 		Section:  user.Section,
 		JobTitle: user.JobTitle,
-		Records:  user.Records,
 	}
 }
 
