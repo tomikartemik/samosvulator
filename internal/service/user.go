@@ -32,7 +32,10 @@ func (s *UserService) SignIn(userData model.SignInInput) (model.SignInOutput, er
 		return model.SignInOutput{}, err
 	}
 
-	token := CreateToken(user.ID)
+	token, err := CreateToken(user.ID)
+	if err != nil {
+		return model.SignInOutput{}, err
+	}
 
 	userOutput := model.SignInOutput{
 		Token: token,
