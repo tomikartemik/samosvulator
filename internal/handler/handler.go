@@ -44,6 +44,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		record.POST("/create", h.CreateRecord)
 		record.GET("/all", h.GetAllRecords)
 		record.GET("/analise", h.GetRecordsForAnalise)
+		record.GET("/by-user-id", h.GetRecordByUserID)
 	}
 	return router
 }

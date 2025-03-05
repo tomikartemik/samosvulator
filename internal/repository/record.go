@@ -22,3 +22,9 @@ func (r *RecordRepository) GetAllRecords() ([]model.Record, error) {
 	result := r.db.Find(&records)
 	return records, result.Error
 }
+
+func (r *RecordRepository) GetRecordsByUserID(userID int) ([]model.Record, error) {
+	var records []model.Record
+	result := r.db.Where("user_id = ?", userID).Find(&records)
+	return records, result.Error
+}

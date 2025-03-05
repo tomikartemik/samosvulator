@@ -29,3 +29,12 @@ func (h *Handler) GetAllRecords(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, records)
 }
+
+func (h *Handler) GetRecordByUserID(c *gin.Context) {
+	id := c.Query("id")
+	records, err := h.services.GetRecordsByUserID(id)
+	if err != nil {
+		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+	}
+	c.JSON(http.StatusOK, records)
+}
