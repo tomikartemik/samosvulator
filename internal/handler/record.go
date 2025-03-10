@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"samosvulator/internal/model"
@@ -47,6 +48,7 @@ func (h *Handler) GetAllRecords(c *gin.Context) {
 
 func (h *Handler) GetRecordByUserID(c *gin.Context) {
 	userID, exists := c.Get("user_id")
+	fmt.Println(userID)
 
 	if !exists {
 		utils.NewErrorResponse(c, http.StatusUnauthorized, "user_id not found in context")

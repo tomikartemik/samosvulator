@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"samosvulator/internal/service"
@@ -20,6 +21,7 @@ func (h *Handler) UserIdentity(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(header)
 	token, err := extractToken(header)
 	if err != nil {
 		utils.NewErrorResponse(c, http.StatusUnauthorized, err.Error())
