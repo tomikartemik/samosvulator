@@ -27,7 +27,7 @@ type User interface {
 type Record interface {
 	CreateRecord(record model.Record) error
 	GetAllRecords() ([]model.Record, error)
-	GetRecordsByUserID(idStr string) ([]model.Record, error)
+	GetRecordsByUserID(userID int) ([]model.Record, error)
 }
 
 type Sheets interface {
