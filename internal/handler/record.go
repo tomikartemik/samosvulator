@@ -46,10 +46,24 @@ func (h *Handler) GetAllRecords(c *gin.Context) {
 }
 
 func (h *Handler) GetRecordByUserID(c *gin.Context) {
-	id := c.Query("id")
-	records, err := h.services.GetRecordsByUserID(id)
+	userID, exists := c.Get("user_id")
+
+	if !exists {
+		utils.NewErrorResponse(c, http.StatusUnauthorized, "user_id not found in context")
+		return
+	}
+
+	userIDStr, ok := userID.(string)
+	if !ok {
+		utils.NewErrorResponse(c, http.StatusUnauthorized, "invalid user_id type in context")
+		return
+	}
+
+	records, err := h.services.GetRecordsByUserID(userIDStr)
+
 	if err != nil {
 		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 	}
+
 	c.JSON(http.StatusOK, records)
 }

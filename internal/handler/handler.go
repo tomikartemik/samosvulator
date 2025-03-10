@@ -41,15 +41,14 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	record := router.Group("/record")
 	{
-		//record.POST("/create", h.CreateRecord)
 		record.GET("/all", h.GetAllRecords)
 		record.GET("/analise", h.GetRecordsForAnalise)
-		record.GET("/by-user-id", h.GetRecordByUserID)
 	}
 
 	authorized := router.Group("/authorized", h.UserIdentity)
 	{
-		authorized.POST("/create", h.CreateRecord)
+		authorized.POST("/create-record", h.CreateRecord)
+		authorized.GET("/records-by-user-id", h.GetRecordByUserID)
 	}
 	return router
 }
