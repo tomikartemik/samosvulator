@@ -21,8 +21,7 @@ func CreateToken(userId int) (string, error) {
 
 	params := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
-			IssuedAt:  time.Now().Unix(),
+			IssuedAt: time.Now().Unix(),
 		},
 		UserId: userId,
 	})
