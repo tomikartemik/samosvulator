@@ -72,11 +72,10 @@ func (s *ResendService) ChangePassword(mail string) error {
 					<p>Вы запросили восстановление пароля. Вот ваш новый пароль:</p>
 					<div class="password">%s</div>
 					<p>Используйте его для входа в систему. Рекомендуем сменить пароль после входа для повышения безопасности.</p>
-					<p><a href="https://your-site.com/login" class="button">Войти в систему</a></p>
 				</div>
 				<div class="footer">
 					<p>Если вы не запрашивали восстановление, проигнорируйте это письмо или свяжитесь с поддержкой.</p>
-					<p>&copy; 2025 Ваша Компания</p>
+					<p>&copy; 2025 Samosvulator</p>
 				</div>
 			</div>
 		</body>
@@ -91,9 +90,9 @@ func (s *ResendService) ChangePassword(mail string) error {
 	}
 
 	fmt.Println(newPassword)
-	hashedPasword := utils.GeneratePasswordHash(newPassword)
+	hashedPassword := utils.GeneratePasswordHash(newPassword)
 
-	err = s.repo.ChangePassword(user.ID, hashedPasword)
+	err = s.repo.ChangePassword(user.ID, hashedPassword)
 
 	if err != nil {
 		return err

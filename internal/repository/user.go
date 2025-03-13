@@ -2,7 +2,6 @@ package repository
 
 import (
 	"errors"
-	"fmt"
 	"gorm.io/gorm"
 	"samosvulator/internal/model"
 )
@@ -52,6 +51,5 @@ func (r *UserRepository) GetUserByUsername(username string) (model.User, error) 
 }
 
 func (r *UserRepository) ChangePassword(userID int, password string) error {
-	fmt.Println(password)
 	return r.db.Model(&model.User{}).Where("id = ?", userID).Update("password", password).Error
 }
