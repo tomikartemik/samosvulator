@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"samosvulator/internal/model"
 	"samosvulator/internal/repository"
 	"samosvulator/internal/utils"
