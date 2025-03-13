@@ -21,10 +21,20 @@ func (s *UserService) SignUp(userData model.User) error {
 }
 
 func (s *UserService) SignIn(userData model.SignInInput) (model.SignInOutput, error) {
-	//userData.Password = utils.GeneratePasswordHash(userData.Password)
+	hash := utils.GeneratePasswordHash(userData.Password)
 	fmt.Println("service sign in " + userData.Password)
 
-	userID, err := s.repo.SignIn(userData)
+	newUser := model.SignInInput{
+		Username: userData.Username,
+		Password: hash,
+	}
+
+	//userID, err := s.repo.SignIn(userData)
+	//if err != nil {
+	//	return model.SignInOutput{}, err
+	//}
+
+	userID, err := s.repo.SignIn(newUser)
 	if err != nil {
 		return model.SignInOutput{}, err
 	}
