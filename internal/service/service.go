@@ -9,6 +9,7 @@ type Service struct {
 	User
 	Record
 	Sheets
+	Resend
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -16,6 +17,7 @@ func NewService(repos *repository.Repository) *Service {
 		User:   NewUserService(repos.User),
 		Record: NewRecordService(repos.Record),
 		Sheets: NewSheetsService(repos.Record, repos.User),
+		Resend: NewResendService(repos.User),
 	}
 }
 
@@ -32,4 +34,8 @@ type Record interface {
 
 type Sheets interface {
 	GetRecordsForAnalise() ([]model.RecordForAnalise, error)
+}
+
+type Resend interface {
+	ChangePassword(mail string) error
 }

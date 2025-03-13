@@ -37,6 +37,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		user.POST("/sign-up", h.SignUp)
 		user.POST("/sign-in", h.SignIn)
+		user.GET("/change-password", h.ChangePassword)
 	}
 
 	record := router.Group("/record")

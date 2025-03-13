@@ -1,9 +1,7 @@
 package main
 
 import (
-	"fmt"
 	"github.com/joho/godotenv"
-	"github.com/resend/resend-go/v2"
 	"github.com/sirupsen/logrus"
 	"log"
 	"os"
@@ -17,23 +15,6 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Println("Warning: No .env file found, using system environment variables.")
 	}
-
-	apiKey := os.Getenv("RESEND_API_KEY")
-
-	client := resend.NewClient(apiKey)
-
-	params := &resend.SendEmailRequest{
-		From:    "Acme <onboarding@resend.dev>",
-		To:      []string{"artemules@mail.ru"},
-		Subject: "Hello world",
-		Html:    "<strong>It works!</strong>",
-	}
-
-	sent, err := client.Emails.Send(params)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(sent.Id)
 
 	db, err := repository.ConnectDB()
 	if err != nil {

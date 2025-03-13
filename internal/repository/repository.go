@@ -21,6 +21,8 @@ type User interface {
 	SignUp(user model.User) error
 	SignIn(userData model.SignInInput) (int, error)
 	GetUserByID(userID int) (model.User, error)
+	GetUserByUsername(username string) (model.User, error)
+	ChangePassword(userID int, password string) error
 }
 
 type Record interface {

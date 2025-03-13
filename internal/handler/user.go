@@ -49,3 +49,13 @@ func (h *Handler) SignIn(c *gin.Context) {
 
 	c.JSON(http.StatusOK, user)
 }
+
+func (h *Handler) ChangePassword(c *gin.Context) {
+	username := c.Query("username")
+	err := h.services.ChangePassword(username)
+	if err != nil {
+		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, model.SuccessResponse{})
+}
