@@ -8,7 +8,6 @@ import (
 	"net/smtp"
 	"os"
 	"samosvulator/internal/repository"
-	"samosvulator/internal/utils"
 )
 
 type ResendService struct {
@@ -25,13 +24,12 @@ func (s *ResendService) ChangePassword(mail string) error {
 		return errors.New("Пользователя с таким именем не существует!")
 	}
 
-	//newPassword, err := generatePassword()
-	//if err != nil {
-	//	fmt.Println("Ошибка при генерации пароля:", err)
-	//	return err
-	//}
+	newPassword, err := generatePassword()
+	if err != nil {
+		fmt.Println("Ошибка при генерации пароля:", err)
+		return err
+	}
 
-	newPassword := "apisujf"
 	smtpHost := "smtp.gmail.com"
 	smtpPort := "587"
 	smtpUser := os.Getenv("SMTP_USER")
@@ -91,9 +89,9 @@ func (s *ResendService) ChangePassword(mail string) error {
 	}
 
 	fmt.Println("service resend " + newPassword)
-	hashedPassword := utils.GeneratePasswordHash(newPassword)
-	fmt.Println("service resend hashed " + hashedPassword)
-	err = s.repo.ChangePassword(user.ID, hashedPassword)
+	//hashedPassword := utils.GeneratePasswordHash(newPassword)
+	//fmt.Println("service resend hashed " + hashedPassword)
+	err = s.repo.ChangePassword(user.ID, newPassword)
 
 	if err != nil {
 		return err
