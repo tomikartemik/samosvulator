@@ -38,6 +38,8 @@ func (h *Handler) SignIn(c *gin.Context) {
 		return
 	}
 
+	fmt.Println("handler " + input.Password)
+
 	user, err := h.services.SignIn(input)
 	if err != nil {
 		if err.Error() == "Пользователя с таким никнеймом не существует!" || err.Error() == "Неверный пароль!" {
@@ -48,7 +50,6 @@ func (h *Handler) SignIn(c *gin.Context) {
 		return
 	}
 
-	fmt.Println("handler " + input.Password)
 	c.JSON(http.StatusOK, user)
 }
 
