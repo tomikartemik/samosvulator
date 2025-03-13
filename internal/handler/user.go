@@ -39,6 +39,7 @@ func (h *Handler) SignIn(c *gin.Context) {
 	}
 
 	fmt.Println("handler " + input.Password)
+	fmt.Println("hadnler hashed " + utils.GeneratePasswordHash(input.Password))
 
 	user, err := h.services.SignIn(input)
 	if err != nil {
