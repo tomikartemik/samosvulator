@@ -4,8 +4,8 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
-	"github.com/resend/resend-go/v2"
 	"math/big"
+	"net/smtp"
 	"os"
 	"samosvulator/internal/repository"
 	"samosvulator/internal/utils"
@@ -31,22 +31,22 @@ func (s *ResendService) ChangePassword(mail string) error {
 		return err
 	}
 
-	apiKey := os.Getenv("RESEND_API_KEY")
+	smtpHost := "smtp.gmail.com"
+	smtpPort := "587"                  // Используйте порт 587 для TLS
+	smtpUser := os.Getenv("SMTP_USER") // Ваш Gmail адрес
+	smtpPass := os.Getenv("SMTP_PASS")
 
-	client := resend.NewClient(apiKey)
-
-	params := &resend.SendEmailRequest{
-		From:    "Samosvulator <onboarding@resend.dev>",
-		To:      []string{mail},
-		Subject: "New password",
-		Html:    "<strong>" + newPassword + "</strong>",
-	}
-
-	sent, err := client.Emails.Send(params)
+	auth := smtp.PlainAuth("", smtpUser, smtpPass, smtpHost)
+	msg := []byte(fmt.Sprintf(
+		"To: %s\r\n"+
+			"Subject: Ваш новый пароль\r\n"+
+			"\r\n"+
+			"Ваш новый пароль: %s\r\n"+
+			"Пожалуйста, смените его после входа.\r\n", mail, newPassword))
+	err = smtp.SendMail(smtpHost+":"+smtpPort, auth, smtpUser, []string{mail}, msg)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	fmt.Println(sent.Id)
 
 	hashedPasword := utils.GeneratePasswordHash(newPassword)
 
