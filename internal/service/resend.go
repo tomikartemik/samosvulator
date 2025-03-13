@@ -8,6 +8,7 @@ import (
 	"net/smtp"
 	"os"
 	"samosvulator/internal/repository"
+	"samosvulator/internal/utils"
 )
 
 type ResendService struct {
@@ -90,9 +91,9 @@ func (s *ResendService) ChangePassword(mail string) error {
 	}
 
 	fmt.Println("service resend " + newPassword)
-	//hashedPassword := utils.GeneratePasswordHash(newPassword)
-	//fmt.Println("service resend hashed " + hashedPassword)
-	err = s.repo.ChangePassword(user.ID, newPassword)
+	hashedPassword := utils.GeneratePasswordHash(newPassword)
+	fmt.Println("service resend hashed " + hashedPassword)
+	err = s.repo.ChangePassword(user.ID, hashedPassword)
 
 	if err != nil {
 		return err
