@@ -57,5 +57,5 @@ func (h *Handler) ChangePassword(c *gin.Context) {
 		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, model.SuccessResponse{})
+	c.JSON(http.StatusOK, "OK!")
 }

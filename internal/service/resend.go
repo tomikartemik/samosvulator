@@ -32,22 +32,65 @@ func (s *ResendService) ChangePassword(mail string) error {
 	}
 
 	smtpHost := "smtp.gmail.com"
-	smtpPort := "587"                  // Используйте порт 587 для TLS
-	smtpUser := os.Getenv("SMTP_USER") // Ваш Gmail адрес
+	smtpPort := "587"
+	smtpUser := os.Getenv("SMTP_USER")
 	smtpPass := os.Getenv("SMTP_PASS")
 
 	auth := smtp.PlainAuth("", smtpUser, smtpPass, smtpHost)
-	msg := []byte(fmt.Sprintf(
+
+	// MIME-заголовки для HTML-письма
+	header := fmt.Sprintf(
 		"To: %s\r\n"+
+			"From: %s\r\n"+
 			"Subject: Ваш новый пароль\r\n"+
-			"\r\n"+
-			"Ваш новый пароль: %s\r\n"+
-			"Пожалуйста, смените его после входа.\r\n", mail, newPassword))
+			"MIME-Version: 1.0\r\n"+
+			"Content-Type: text/html; charset=\"UTF-8\"\r\n"+
+			"\r\n", mail, smtpUser)
+
+	// HTML-тело письма
+	body := fmt.Sprintf(`
+		<!DOCTYPE html>
+		<html>
+		<head>
+			<style>
+				body { font-family: Arial, sans-serif; color: #333; }
+				.container { max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 10px; }
+				.header { background-color: #4285f4; color: white; padding: 15px; text-align: center; border-radius: 10px 10px 0 0; }
+				.content { padding: 20px; background-color: white; border-radius: 0 0 10px 10px; }
+				.password { font-size: 18px; font-weight: bold; color: #4285f4; background-color: #e8f0fe; padding: 10px; border-radius: 5px; text-align: center; }
+				.footer { text-align: center; font-size: 12px; color: #777; margin-top: 20px; }
+				.button { display: inline-block; padding: 10px 20px; background-color: #4285f4; color: white; text-decoration: none; border-radius: 5px; }
+			</style>
+		</head>
+		<body>
+			<div class="container">
+				<div class="header">
+					<h2>Восстановление пароля</h2>
+				</div>
+				<div class="content">
+					<p>Здравствуйте!</p>
+					<p>Вы запросили восстановление пароля. Вот ваш новый пароль:</p>
+					<div class="password">%s</div>
+					<p>Используйте его для входа в систему. Рекомендуем сменить пароль после входа для повышения безопасности.</p>
+					<p><a href="https://your-site.com/login" class="button">Войти в систему</a></p>
+				</div>
+				<div class="footer">
+					<p>Если вы не запрашивали восстановление, проигнорируйте это письмо или свяжитесь с поддержкой.</p>
+					<p>&copy; 2025 Ваша Компания</p>
+				</div>
+			</div>
+		</body>
+		</html>
+	`, newPassword)
+
+	msg := []byte(header + body)
+
 	err = smtp.SendMail(smtpHost+":"+smtpPort, auth, smtpUser, []string{mail}, msg)
 	if err != nil {
 		return err
 	}
 
+	fmt.Println(newPassword)
 	hashedPasword := utils.GeneratePasswordHash(newPassword)
 
 	err = s.repo.ChangePassword(user.ID, hashedPasword)
