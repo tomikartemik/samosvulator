@@ -110,6 +110,7 @@ func generatePassword() (string, error) {
 
 	password := make([]byte, 16)
 
+	// Заполняем первые 3 символа из категорий
 	categories := []string{upper, lower, digits}
 	for i, cat := range categories {
 		char, err := randomChar(cat)
@@ -119,7 +120,8 @@ func generatePassword() (string, error) {
 		password[i] = char
 	}
 
-	for i := 4; i < 16; i++ {
+	// Заполняем оставшиеся 13 символов (с 3 до 15)
+	for i := 3; i < 16; i++ { // Изменено с 4 на 3, чтобы заполнить все 16 байтов
 		char, err := randomChar(all)
 		if err != nil {
 			return "", err
@@ -127,6 +129,7 @@ func generatePassword() (string, error) {
 		password[i] = char
 	}
 
+	// Перемешиваем
 	for i := len(password) - 1; i > 0; i-- {
 		j, err := rand.Int(rand.Reader, big.NewInt(int64(i+1)))
 		if err != nil {
