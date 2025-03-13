@@ -21,7 +21,7 @@ func (s *UserService) SignUp(userData model.User) error {
 }
 
 func (s *UserService) SignIn(userData model.SignInInput) (model.SignInOutput, error) {
-	userData.Password = utils.GeneratePasswordHash(userData.Password)
+	//userData.Password = utils.GeneratePasswordHash(userData.Password)
 	fmt.Println("service sign in " + userData.Password)
 
 	userID, err := s.repo.SignIn(userData)
