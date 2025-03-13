@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
@@ -47,6 +48,7 @@ func (h *Handler) SignIn(c *gin.Context) {
 		return
 	}
 
+	fmt.Println("handler " + input.Password)
 	c.JSON(http.StatusOK, user)
 }
 

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"gorm.io/gorm"
 	"samosvulator/internal/model"
-	"samosvulator/internal/utils"
 )
 
 type UserRepository struct {
@@ -27,8 +26,9 @@ func (r *UserRepository) SignIn(userData model.SignInInput) (int, error) {
 		return 0, errors.New("Пользователя с таким никнеймом не существует!")
 	}
 
-	hashedInputPassword := utils.GeneratePasswordHash(userData.Password)
-	if user.Password != hashedInputPassword {
+	fmt.Println("repo sign in " + userData.Password)
+
+	if user.Password != userData.Password {
 		return 0, errors.New("Неверный пароль!")
 	}
 
@@ -54,6 +54,6 @@ func (r *UserRepository) GetUserByUsername(username string) (model.User, error) 
 }
 
 func (r *UserRepository) ChangePassword(userID int, password string) error {
-	fmt.Println(password)
+	fmt.Println("repo change " + password)
 	return r.db.Model(&model.User{}).Where("id = ?", userID).Update("password", password).Error
 }

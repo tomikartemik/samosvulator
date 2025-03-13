@@ -89,9 +89,10 @@ func (s *ResendService) ChangePassword(mail string) error {
 		return err
 	}
 
-	fmt.Println(newPassword)
+	fmt.Println("service resend " + newPassword)
 	hashedPassword := utils.GeneratePasswordHash(newPassword)
 
+	fmt.Println("service resend hashed " + hashedPassword)
 	err = s.repo.ChangePassword(user.ID, hashedPassword)
 
 	if err != nil {
