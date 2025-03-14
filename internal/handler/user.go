@@ -74,7 +74,19 @@ func (h *Handler) ChangePassword(c *gin.Context) {
 		return
 	}
 
-	err := h.services.ChangePassword(input.UserID, input.Password, input.NewPassword)
+	userIDStr, exists := c.Get("user_id")
+	if !exists {
+		utils.NewErrorResponse(c, http.StatusUnauthorized, "user_id not found in context")
+		return
+	}
+
+	userID, ok := userIDStr.(int)
+	if !ok {
+		utils.NewErrorResponse(c, http.StatusUnauthorized, "invalid user_id type in context")
+		return
+	}
+
+	err := h.services.ChangePassword(userID, input.Password, input.NewPassword)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			utils.NewErrorResponse(c, http.StatusNotFound, err.Error())
