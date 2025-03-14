@@ -54,6 +54,5 @@ func (r *UserRepository) GetUserByUsername(username string) (model.User, error) 
 }
 
 func (r *UserRepository) ChangePassword(userID int, password string) error {
-	fmt.Println("repo change " + password)
 	return r.db.Model(&model.User{}).Where("id = ?", userID).Update("password", password).Error
 }

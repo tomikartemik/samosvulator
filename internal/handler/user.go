@@ -2,7 +2,6 @@ package handler
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
@@ -38,9 +37,6 @@ func (h *Handler) SignIn(c *gin.Context) {
 		return
 	}
 
-	fmt.Println("handler " + input.Password)
-	fmt.Println("hadnler hashed " + utils.GeneratePasswordHash(input.Password))
-
 	user, err := h.services.SignIn(input)
 	if err != nil {
 		if err.Error() == "Пользователя с таким никнеймом не существует!" {
@@ -48,6 +44,7 @@ func (h *Handler) SignIn(c *gin.Context) {
 			return
 		} else if err.Error() == "Неверный пароль!" {
 			utils.NewErrorResponse(c, http.StatusUnauthorized, err.Error())
+			return
 		}
 		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

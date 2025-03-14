@@ -24,7 +24,7 @@ type SignInOutput struct {
 
 type ChangePasswordInput struct {
 	Password    string `json:"password"`
-	NewPassword string `json:"new_pass"`
+	NewPassword string `json:"new_password"`
 }
 
 type UserOutput struct {
