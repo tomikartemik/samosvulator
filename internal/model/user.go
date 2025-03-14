@@ -22,6 +22,12 @@ type SignInOutput struct {
 	User  UserOutput `json:"user"`
 }
 
+type ChangePasswordInput struct {
+	UserID      int    `json:"user_id"`
+	Password    string `json:"password"`
+	NewPassword string `json:"new_pass"`
+}
+
 type UserOutput struct {
 	ID       int    `json:"id"`
 	Username string `json:"username"`

@@ -19,7 +19,7 @@ func NewResendService(repo repository.User) *ResendService {
 	return &ResendService{repo: repo}
 }
 
-func (s *ResendService) ChangePassword(mail string) error {
+func (s *ResendService) ChangePasswordByMail(mail string) error {
 	user, err := s.repo.GetUserByUsername(mail)
 	if err != nil {
 		return errors.New("Пользователя с таким именем не существует!")

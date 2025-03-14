@@ -24,6 +24,7 @@ func NewService(repos *repository.Repository) *Service {
 type User interface {
 	SignUp(userData model.User) error
 	SignIn(userData model.SignInInput) (model.SignInOutput, error)
+	ChangePassword(userID int, password, newPassword string) error
 }
 
 type Record interface {
@@ -37,5 +38,5 @@ type Sheets interface {
 }
 
 type Resend interface {
-	ChangePassword(mail string) error
+	ChangePasswordByMail(mail string) error
 }

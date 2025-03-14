@@ -43,9 +43,11 @@ func (h *Handler) SignIn(c *gin.Context) {
 
 	user, err := h.services.SignIn(input)
 	if err != nil {
-		if err.Error() == "Пользователя с таким никнеймом не существует!" || err.Error() == "Неверный пароль!" {
+		if err.Error() == "Пользователя с таким никнеймом не существует!" {
 			utils.NewErrorResponse(c, http.StatusUnauthorized, err.Error())
 			return
+		} else if err.Error() == "Неверный пароль!" {
+			utils.NewErrorResponse(c, http.StatusUnauthorized, err.Error())
 		}
 		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -54,12 +56,32 @@ func (h *Handler) SignIn(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-func (h *Handler) ChangePassword(c *gin.Context) {
+func (h *Handler) ChangePasswordByMail(c *gin.Context) {
 	username := c.Query("username")
-	err := h.services.ChangePassword(username)
+	err := h.services.ChangePasswordByMail(username)
 	if err != nil {
 		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 	c.JSON(http.StatusOK, "OK!")
+}
+
+func (h *Handler) ChangePassword(c *gin.Context) {
+	var input model.ChangePasswordInput
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	err := h.services.ChangePassword(input.UserID, input.Password, input.NewPassword)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			utils.NewErrorResponse(c, http.StatusNotFound, err.Error())
+		}
+		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, "Password Changed Successfully!")
 }

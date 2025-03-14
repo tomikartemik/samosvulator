@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"fmt"
 	"samosvulator/internal/model"
 	"samosvulator/internal/repository"
@@ -45,4 +46,22 @@ func (s *UserService) SignIn(userData model.SignInInput) (model.SignInOutput, er
 	}
 
 	return userOutput, nil
+}
+
+func (s *UserService) ChangePassword(userID int, password, newPassword string) error {
+	user, err := s.repo.GetUserByID(userID)
+	if err != nil {
+		return err
+	}
+
+	if user.Password != utils.GeneratePasswordHash(password) {
+		return errors.New("password incorrect")
+	}
+
+	err = s.repo.ChangePassword(userID, utils.GeneratePasswordHash(newPassword))
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
